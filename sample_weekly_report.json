@@ -1,0 +1,52 @@
+{
+  "headline": "Weekly Status Report",
+  "report_date": "September 10, 2026",
+  "summary": "This week, the team delivered core work items, kept momentum on in-progress initiatives, and identified a few dependencies that need stakeholder attention next week.",
+  "tasks": [
+    {
+      "id": "TASK-101",
+      "title": "Finalize sprint planning",
+      "status": "Completed",
+      "owner": "Alex",
+      "priority": "High",
+      "due": "2026-09-08",
+      "note": "Planning completed and approved by engineering leadership."
+    },
+    {
+      "id": "TASK-102",
+      "title": "Implement weekly stakeholder update workflow",
+      "status": "In Progress",
+      "owner": "Jordan",
+      "priority": "High",
+      "due": "2026-09-15",
+      "note": "Initial automation script is in place; HTML email output is being finalized."
+    },
+    {
+      "id": "TASK-103",
+      "title": "Review dependency on external API",
+      "status": "Blocked",
+      "owner": "Priya",
+      "priority": "Medium",
+      "due": "2026-09-12",
+      "note": "Waiting for confirmatory response from partner team."
+    },
+    {
+      "id": "TASK-104",
+      "title": "Prepare onboarding checklist",
+      "status": "Not Started",
+      "owner": "Sam",
+      "priority": "Low",
+      "due": "2026-09-18",
+      "note": "Needs final content review before kickoff."
+    }
+  ],
+  "risks": [
+    "Partner team response is still pending for the external API dependency.",
+    "The weekly reporting automation needs final validation before broader use."
+  ],
+  "next_week_priorities": [
+    "Complete the stakeholder update workflow and validate HTML output.",
+    "Resolve the external API dependency with the partner team.",
+    "Finalize onboarding checklist content and assign owners."
+  ]
+}

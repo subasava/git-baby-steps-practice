@@ -1,0 +1,217 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Weekly Status Report</title>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+                background: #f5f7fb;
+                color: #1f2937;
+            }
+            .email-wrapper {
+                max-width: 900px;
+                margin: 32px auto;
+                background: #ffffff;
+                border: 1px solid #dfe3ea;
+                border-radius: 10px;
+                overflow: hidden;
+            }
+            .header {
+                background: #0f172a;
+                color: #ffffff;
+                padding: 24px;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 28px;
+            }
+            .header .date {
+                margin-top: 8px;
+                color: #cbd5e1;
+                font-size: 14px;
+            }
+            .content {
+                padding: 24px;
+            }
+            .summary {
+                margin-bottom: 24px;
+                padding: 16px;
+                border-left: 4px solid #3b82f6;
+                background: #eff6ff;
+                border-radius: 6px;
+            }
+            .metrics {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+            .metric {
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                padding: 16px;
+            }
+            .metric .label {
+                display: block;
+                color: #475569;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                margin-bottom: 8px;
+            }
+            .metric .value {
+                font-size: 24px;
+                font-weight: 700;
+            }
+            h2 {
+                font-size: 20px;
+                margin-top: 24px;
+                margin-bottom: 12px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 14px;
+            }
+            th, td {
+                padding: 12px;
+                border-bottom: 1px solid #e2e8f0;
+                text-align: left;
+                vertical-align: top;
+            }
+            th {
+                background: #f8fafc;
+                font-weight: 700;
+            }
+            ul {
+                margin-top: 0;
+                padding-left: 18px;
+            }
+            li {
+                margin-bottom: 8px;
+            }
+            .footer {
+                padding: 16px 24px 24px;
+                font-size: 12px;
+                color: #64748b;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-wrapper">
+            <div class="header">
+                <h1>Weekly Status Report</h1>
+                <div class="date">September 10, 2026</div>
+            </div>
+            <div class="content">
+                <div class="summary">This week, the team delivered core work items, kept momentum on in-progress initiatives, and identified a few dependencies that need stakeholder attention next week.</div>
+                
+    <div class="metrics">
+        <div class="metric">
+            <span class="label">Completed</span>
+            <span class="value">1</span>
+        </div>
+        <div class="metric">
+            <span class="label">In Progress</span>
+            <span class="value">1</span>
+        </div>
+        <div class="metric">
+            <span class="label">Blocked</span>
+            <span class="value">1</span>
+        </div>
+        <div class="metric">
+            <span class="label">Not Started</span>
+            <span class="value">1</span>
+        </div>
+    </div>
+    
+                <section>
+                    <h2>Current Work</h2>
+                    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Owner</th>
+                <th>Priority</th>
+                <th>Due</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td>TASK-101</td>
+                <td>Finalize sprint planning</td>
+                <td>Completed</td>
+                <td>Alex</td>
+                <td>High</td>
+                <td>2026-09-08</td>
+                <td>Planning completed and approved by engineering leadership.</td>
+            </tr>
+            
+            <tr>
+                <td>TASK-102</td>
+                <td>Implement weekly stakeholder update workflow</td>
+                <td>In Progress</td>
+                <td>Jordan</td>
+                <td>High</td>
+                <td>2026-09-15</td>
+                <td>Initial automation script is in place; HTML email output is being finalized.</td>
+            </tr>
+            
+            <tr>
+                <td>TASK-103</td>
+                <td>Review dependency on external API</td>
+                <td>Blocked</td>
+                <td>Priya</td>
+                <td>Medium</td>
+                <td>2026-09-12</td>
+                <td>Waiting for confirmatory response from partner team.</td>
+            </tr>
+            
+            <tr>
+                <td>TASK-104</td>
+                <td>Prepare onboarding checklist</td>
+                <td>Not Started</td>
+                <td>Sam</td>
+                <td>Low</td>
+                <td>2026-09-18</td>
+                <td>Needs final content review before kickoff.</td>
+            </tr>
+            
+        </tbody>
+    </table>
+    
+                </section>
+                
+    <section>
+        <h2>Risks & Dependencies</h2>
+        <ul>
+            <li>Partner team response is still pending for the external API dependency.</li><li>The weekly reporting automation needs final validation before broader use.</li>
+        </ul>
+    </section>
+    
+                
+    <section>
+        <h2>Next Week's Priorities</h2>
+        <ul>
+            <li>Complete the stakeholder update workflow and validate HTML output.</li><li>Resolve the external API dependency with the partner team.</li><li>Finalize onboarding checklist content and assign owners.</li>
+        </ul>
+    </section>
+    
+            </div>
+            <div class="footer">
+                Generated automatically from task tracker input.
+            </div>
+        </div>
+    </body>
+    </html>
+    
