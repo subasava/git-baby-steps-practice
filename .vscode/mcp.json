@@ -9,7 +9,7 @@
       "args": ["/Users/subramanya_basavapattana/workspace/.vscode/mcp-time.sh"]
     },
     "jira": {
-      "command": "node",
+      "command": "npx",
       "args": [
         "-y",
         "jira-mcp-server"
