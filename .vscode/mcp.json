@@ -9,13 +9,13 @@
       "args": ["/Users/subramanya_basavapattana/workspace/.vscode/mcp-time.sh"]
     },
     "jira": {
-      "command": "npx",
+      "command": "node",
       "args": [
         "-y",
-        "@Subbu/jira-mcp-server"
+        "jira-mcp-server"
       ],
       "env": {
-        "JIRA_BASE_URL": "https://jiraeu.epam.com",
+        "JIRA_BASE_URL": "https://jiraeu.epam.com/",
         "JIRA_EMAIL": "subramanya_basavapattana@epam.com",
         "JIRA_API_TOKEN": "nXaUljPC2N18WxdASdyBvHfvC2jQDgl1YojF1F",
         "JIRA_PROJECT_KEY": "EPMCDMETST"
