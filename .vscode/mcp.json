@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "echo-macos": {
+      "command": "bash",
+      "args": ["/Users/subramanya_basavapattana/workspace/.vscode/mcp-echo.sh"]
+    }
+  }
+}
