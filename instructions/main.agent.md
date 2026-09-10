@@ -4,4 +4,6 @@
 - hello-genai/Instructions/add-json-loader-unit-tests.agent.md
 - hello-genai/Instructions/add-unit-tests-with-aggregation.agent.md
 - hello-genai/Instructions/add-pdf-tests.agent.md
+- hello-genai/Instructions/use-reportinputschema.agent.md
+- hello-genai/Instructions/use-validatereportdata.agent.md
 
