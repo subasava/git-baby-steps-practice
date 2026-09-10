@@ -11,7 +11,13 @@ def load_data(input_path: str):
 
 
 def status_counts(tasks):
-    counts = {"Completed": 0, "In Progress": 0, "Blocked": 0, "Not Started": 0}
+    counts = {
+        "Completed": 0,
+        "In Progress": 0,
+        "Blocked": 0,
+        "Pending Approval": 0,
+        "Not Started": 0,
+    }
     for task in tasks:
         status = task.get("status", "Not Started")
         if status in counts:
@@ -123,6 +129,10 @@ def render_html(report_data):
         <div class="metric">
             <span class="label">Blocked</span>
             <span class="value">{counts['Blocked']}</span>
+        </div>
+        <div class="metric">
+            <span class="label">Pending Approval</span>
+            <span class="value">{counts['Pending Approval']}</span>
         </div>
         <div class="metric">
             <span class="label">Not Started</span>

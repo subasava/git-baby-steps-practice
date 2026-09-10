@@ -6,7 +6,7 @@ Scope:
 
 Requirements:
 - Use the existing Python test setup and keep the tests focused on aggregation and report-content behavior.
-- Verify that `status_counts(tasks)` returns the correct counts for Completed, In Progress, Blocked, and Not Started.
+- Verify that `status_counts(tasks)` returns the correct counts for Completed, In Progress, Blocked, Pending Approval, and Not Started.
 - Verify that unknown or missing task statuses are handled consistently, with unsupported values falling back to Not Started where appropriate.
 - Verify that the generated HTML or report summary includes the expected headline, report date, summary narrative, and metric values.
 - Verify that executive summary content reflects the correct counts and report text, not just the presence of a section header.
