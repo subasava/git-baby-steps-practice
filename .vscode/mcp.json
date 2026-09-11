@@ -17,6 +17,11 @@
         "JIRA_API_TOKEN": "nXaUljPC2N18WxdASdyBvHfvC2jQDgl1YojF1F",
         "JIRA_PROJECT_KEY": "EPMCDMETST"
       }
-    }
+    },
+    "github": { 
+      "type": "http", 
+      "url": "https://api.githubcopilot.com/mcp/"
+    }     
+
   }
 }
