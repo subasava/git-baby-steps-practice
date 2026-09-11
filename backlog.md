@@ -12,12 +12,12 @@ This backlog is derived from [project_spec.md](project_spec.md) and reflects the
 
 Note: Jira MCP can assist with Jira issue tracking and project metadata workflows, but it cannot perform the implementation tasks in this backlog directly. All items below are therefore marked as Custom Skill.
 
-- [ ] Confirm the current baseline implementation and identify what should be preserved from the existing Python CLI and sample JSON workflow (Custom Skill)
-- [ ] Define the target project structure for the MVP, including modules for input loading, validation, transformation, rendering, output generation, and CLI entry points (Custom Skill)
-- [ ] Create a clear input schema contract for the report data model, including required fields for tasks, milestones, risks, dependencies, and next-week priorities (Custom Skill)
-- [ ] Define validation rules for missing required fields, malformed values, and unsupported statuses so the tool produces actionable errors instead of broken output (Custom Skill)
-- [ ] Decide the output layout and file conventions for HTML and PDF artifacts, including default output names and directories (Custom Skill)
-- [ ] Establish a local development workflow for running the CLI against sample data and reviewing generated artifacts (Custom Skill)
+- [ ] Confirm the current baseline implementation and identify what should be preserved from the existing Python CLI and sample JSON workflow (Custom Skill) — GitHub issue #1
+- [ ] Define the target project structure for the MVP, including modules for input loading, validation, transformation, rendering, output generation, and CLI entry points (Custom Skill) — GitHub issue #2
+- [ ] Create a clear input schema contract for the report data model, including required fields for tasks, milestones, risks, dependencies, and next-week priorities (Custom Skill) — GitHub issue #3
+- [ ] Define validation rules for missing required fields, malformed values, and unsupported statuses so the tool produces actionable errors instead of broken output (Custom Skill) — GitHub issue #4
+- [ ] Decide the output layout and file conventions for HTML and PDF artifacts, including default output names and directories (Custom Skill) — GitHub issue #5
+- [ ] Establish a local development workflow for running the CLI against sample data and reviewing generated artifacts (Custom Skill) — GitHub issue #6
 
 ## Phase 2: Core Features
 
