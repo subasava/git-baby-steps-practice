@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: statusreport
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    image: node:20-alpine
+    working_dir: /workspace/status-report-webapp/server
+    command: sh -lc "npm install && npm run dev"
+    volumes:
+      - .:/workspace
+    environment:
+      PORT: 3001
+      REPORT_DATA_FILE: /workspace/status-report-webapp/server/data/sampleReport.json
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /workspace/status-report-webapp/client
+    command: sh -lc "npm install && npm run dev"
+    volumes:
+      - .:/workspace
+    environment:
+      VITE_BACKEND_TARGET: http://backend:3001
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

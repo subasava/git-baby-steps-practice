@@ -264,77 +264,250 @@ Core workflows must be testable through unit, integration, and API-level tests. 
 
 ## 10. Data Model
 
-### 10.1 Core Entities
+### 10.1 Canonical Internal Schema
+
+For v1, Jira and Confluence are the upstream data sources. PostgreSQL is the system of record for normalized, validated, report-ready data. The following canonical schema defines the internal representation used by the backend, frontend, and reporting engine.
 
 #### Report
 
-- id
-- title
-- report_date
-- created_at
-- updated_at
-- status
-- source_metadata
+Represents a single generated weekly report instance.
 
-#### Work Item
+Required fields:
 
-- id
-- external_id
-- title
-- owner
-- status
-- priority
-- due_date
-- notes
-- source_system
-- source_record
+- id: unique report identifier
+- title: report title, typically "Weekly Status Report"
+- report_date: ISO date for the reporting period
+- summary: executive summary narrative
+- status: enum such as draft, ready, generated, failed
+- created_at: timestamp
+- updated_at: timestamp
+- source_metadata: JSON object containing source system metadata and run configuration
+
+Optional fields:
+
+- artifact_refs: references to generated HTML, PDF, or JSON outputs
+- validation_summary: summary of validation warnings or blockers
+
+#### Work Item / Task
+
+Represents a tracked unit of work, typically sourced from Jira issues or normalized task records.
+
+Required fields:
+
+- id: unique task identifier
+- external_id: original source identifier from Jira or another upstream source
+- title: task title
+- owner: accountable owner or assignee
+- status: enum such as completed, in_progress, blocked, not_started
+- priority: enum such as high, medium, low
+- source_system: enum such as jira, confluence, json
+- source_record: raw source payload or a reference to the normalized snapshot record
+
+Optional fields:
+
+- due_date: ISO date
+- notes: free-form task notes
+- labels: array of tags or labels
+- related_issue_ids: array of linked Jira item identifiers
 
 #### Milestone
 
-- id
-- name
-- target_date
-- status
-- completion_percent
-- source_system
+Represents a major milestone or delivery checkpoint.
+
+Required fields:
+
+- id: unique milestone identifier
+- name: milestone name
+- target_date: ISO date
+- status: enum such as on_track, at_risk, blocked, completed
+- completion_percent: integer from 0 to 100
+- source_system: enum such as jira, confluence, json
+
+Optional fields:
+
+- notes: milestone commentary
+- external_id: original upstream identifier
 
 #### Risk or Issue
 
-- id
-- description
-- owner
-- severity
-- mitigation
-- status
-- source_system
+Represents a risk, issue, or blocker surfaced in the weekly report.
+
+Required fields:
+
+- id: unique risk/issue identifier
+- description: summary of the risk or issue
+- owner: accountable owner
+- severity: enum such as high, medium, low
+- mitigation: mitigation plan or next action
+- status: enum such as open, in_progress, mitigated, closed
+- source_system: source of the record
+
+Optional fields:
+
+- external_id: original source identifier
+- related_item_ids: related Jira or task references
 
 #### Dependency
 
-- id
-- description
-- owner
-- status
-- action_required
-- source_system
+Represents a dependency or handoff requiring attention.
 
-### 10.2 Report Input Contract
+Required fields:
 
-The system should support a normalized JSON structure similar to:
+- id: unique dependency identifier
+- description: dependency description
+- owner: accountable owner
+- status: enum such as blocked, at_risk, on_track, resolved
+- action_required: clear next action or required support
+- source_system: source system
+
+Optional fields:
+
+- external_id: original upstream identifier
+- related_item_ids: related work references
+
+#### Source Snapshot
+
+Stores raw or near-raw upstream data to support observability and auditability.
+
+Required fields:
+
+- id: unique snapshot identifier
+- source_system: jira or confluence
+- source_type: issue, page, report, or other source category
+- fetched_at: timestamp
+- raw_payload: JSON object with the raw upstream record
+- run_id: correlation identifier for the processing run
+
+Optional fields:
+
+- validation_status: pending, valid, invalid
+- error_message: failure details if the fetch or parse failed
+
+#### Validation Issue
+
+Stores validation results for data that was rejected, corrected, or warned on.
+
+Required fields:
+
+- id: unique validation issue identifier
+- entity_type: type of entity affected
+- entity_id: affected internal identifier
+- field: field that failed validation
+- rule: validation rule name
+- message: developer- and user-facing explanation
+- severity: error or warning
+- created_at: timestamp
+
+Optional fields:
+
+- suggested_fix: remediation guidance
+
+### 10.2 Validation and Required-Field Rules
+
+The following rules define the minimum validation contract for v1.
+
+#### Required fields
+
+- Every report must contain a title, report_date, summary, and status.
+- Every task must contain a title, owner, status, priority, and source_system.
+- Every milestone must contain a name, target_date, status, completion_percent, and source_system.
+- Every risk/issue must contain a description, owner, severity, mitigation, status, and source_system.
+- Every dependency must contain a description, owner, status, action_required, and source_system.
+
+#### Data-type rules
+
+- report_date, due_date, and target_date must be valid ISO dates.
+- completion_percent must be an integer between 0 and 100.
+- status and priority values must be restricted to documented enumerations.
+- raw_payload and source_record must be JSON-compatible objects.
+
+#### Business rules
+
+- A report cannot be generated from invalid data if any required records fail validation.
+- A task with status equal to blocked must include a clear note or dependency reference when available.
+- A milestone with status at_risk or blocked must include a meaningful completion comment or supporting note.
+- A dependency with status blocked must define action_required.
+- Source snapshots must retain a run_id so each ingestion pass can be traced.
+
+#### Validation behavior
+
+- Validation shall run before persistence and before report generation.
+- Validation errors shall be stored as Validation Issue records and surfaced through the API.
+- Invalid records shall not silently overwrite previously accepted valid data.
+- The system shall support warning-level validation for non-blocking data quality issues when appropriate.
+
+### 10.3 Normalized Input Contract
+
+The system should support a normalized JSON structure similar to the following:
 
 ```json
 {
-  "headline": "Weekly Status Report",
-  "report_date": "2026-09-11",
-  "summary": "Summary narrative",
-  "tasks": [],
-  "milestones": [],
-  "risks": [],
-  "dependencies": [],
-  "next_week_priorities": []
+  "report": {
+    "id": "report-2026-09-11",
+    "title": "Weekly Status Report",
+    "report_date": "2026-09-11",
+    "summary": "Summary narrative",
+    "status": "ready",
+    "source_metadata": {
+      "source_systems": ["jira", "confluence"],
+      "run_id": "run-001"
+    }
+  },
+  "tasks": [
+    {
+      "id": "task-001",
+      "external_id": "JIRA-101",
+      "title": "Finalize sprint planning",
+      "owner": "Alex",
+      "status": "completed",
+      "priority": "high",
+      "due_date": "2026-09-08",
+      "notes": "Planning completed and approved by engineering leadership.",
+      "source_system": "jira",
+      "source_record": {
+        "issueKey": "JIRA-101"
+      }
+    }
+  ],
+  "milestones": [
+    {
+      "id": "milestone-001",
+      "name": "Migration phase 1",
+      "target_date": "2026-09-30",
+      "status": "on_track",
+      "completion_percent": 65,
+      "source_system": "jira"
+    }
+  ],
+  "risks": [
+    {
+      "id": "risk-001",
+      "description": "External API dependency is still pending",
+      "owner": "Priya",
+      "severity": "high",
+      "mitigation": "Receive confirmation from the partner team.",
+      "status": "open",
+      "source_system": "confluence"
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "dependency-001",
+      "description": "Partner team confirmation required",
+      "owner": "Priya",
+      "status": "blocked",
+      "action_required": "Follow up with partner team and confirm timeline.",
+      "source_system": "jira"
+    }
+  ],
+  "next_week_priorities": [
+    "Complete the stakeholder update workflow",
+    "Resolve the external API dependency"
+  ]
 }
 ```
 
-### 10.3 Output Contract
+### 10.4 Output Contract
 
 Generated reports should include:
 
@@ -347,23 +520,46 @@ Generated reports should include:
 - dependencies and handoffs
 - next-week priorities
 - generated artifacts metadata
+- validation summary, including any warnings or blockers encountered
+
+### 10.5 Canonical Field Conventions
+
+The following conventions apply across the canonical schema for v1:
+
+- Use ISO 8601 date strings for dates and timestamps.
+- Use lowercase enum values for status and source identifiers where practical.
+- Keep source identifiers separate from internal identifiers.
+- Preserve provenance with source_system, external_id, and source_record metadata.
+- Keep validation errors distinct from generated report content.
 
 ## 11. Integration Requirements
 
 ### 11.1 Jira Integration
 
-The system shall support reading Jira data such as:
+For v1, the system shall support authenticated read access to Jira data using configured credentials stored outside of source control. The system will consume Jira issue metadata needed for weekly reporting, including:
 
 - issue summaries,
 - status fields,
 - assignees,
 - due dates,
 - labels/tags,
-- links to related work.
+- links to related work,
+- issue hierarchy or related issue references where available.
+
+The minimum fields required for a Jira issue to be usable in v1 are:
+
+- issue key or equivalent unique identifier,
+- summary/title,
+- status,
+- assignee or owner,
+- updated timestamp,
+- project context where needed for reporting.
+
+The system shall treat unsupported or unavailable Jira fields as optional unless they are explicitly required for a report section.
 
 ### 11.2 Confluence Integration
 
-The system shall support reading Confluence content such as:
+For v1, the system shall support authenticated read access to Confluence content using configured credentials stored outside of source control. The system shall consume Confluence page metadata and summaries needed for weekly reporting, including:
 
 - page titles,
 - page metadata,
@@ -371,7 +567,56 @@ The system shall support reading Confluence content such as:
 - status notes and updates,
 - references to related Jira items.
 
-### 11.3 API Contract Expectations
+The minimum fields required for a Confluence page to be usable in v1 are:
+
+- page identifier,
+- page title,
+- updated timestamp,
+- content summary or structured content excerpt,
+- related Jira references where available.
+
+The system shall support Confluence content ingestion in a structured manner, but it does not need to process every possible Confluence document format in v1. Advanced page transformation, rich content parsing, or deep document analytics are considered out of scope unless explicitly added later.
+
+### 11.3 Atlassian Authentication and Secret Handling
+
+v1 shall use environment-variable-based configuration for Jira and Confluence authentication. Secrets must never be stored in source code, committed configuration files, or generated artifacts.
+
+Accepted v1 authentication assumptions:
+
+- Jira and Confluence access shall use configured API credentials or tokens provided through secure environment configuration.
+- The application shall fail clearly when required credentials are missing, expired, or invalid.
+- The system shall support separate configuration for development, testing, and production environments.
+
+The system shall not assume user-interactive login flows in v1. For this release, the project is scoped to service-backed, automated integrations rather than interactive end-user Atlassian authentication.
+
+### 11.4 Out-of-Scope Atlassian Features for v1
+
+The following Atlassian capabilities are explicitly out of scope for v1 unless separately approved:
+
+- full custom-field mapping for every Jira field type,
+- advanced Confluence page transformation beyond content summaries and metadata extraction,
+- general workflow orchestration across Atlassian products,
+- enterprise-level access-control or SSO integration beyond basic configuration management,
+- multi-user collaboration or approval workflows in the Atlassian integration layer.
+
+### 11.5 Integration Failure Handling
+
+The system shall handle Atlassian integration failures predictably and with enough context for remediation. The following failure modes are in scope for v1:
+
+- invalid or expired credentials,
+- missing required fields in an API response,
+- partial data payloads,
+- unavailable Atlassian services,
+- rate-limit or quota-related errors.
+
+For each failure mode, the system shall:
+
+- return a clear, actionable error message,
+- persist the failure metadata and run context,
+- avoid silently corrupting previously accepted valid records,
+- preserve enough information for a technical owner to investigate and correct the issue.
+
+### 11.6 API Contract Expectations
 
 The backend should expose stable endpoints for:
 

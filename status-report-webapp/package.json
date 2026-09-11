@@ -1,1 +1,10 @@
-{}
+{
+  "name": "status-report-webapp",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start:backend": "cd server && npm install && npm run start",
+    "start:frontend": "cd client && npm install && npm run dev -- --host 0.0.0.0",
+    "start:all": "npm run start:backend & npm run start:frontend"
+  }
+}
