@@ -8,13 +8,15 @@ This document expands the project’s high-level goals into implementation-ready
 
 ## 2. Product Summary
 
-The project will enable teams to automate status reporting and operational visibility across Jira and Confluence by:
+The project will deliver a first release focused on a weekly status reporting workflow for Delivery Managers and leadership audiences, supported by Jira/Confluence automation. In v1, the system will:
 
-- ingesting data from Jira and Confluence sources,
-- normalizing and validating structure and content,
-- persisting approved data in PostgreSQL,
-- exposing a web-based interface for report workflows,
-- generating readable executive outputs such as HTML reports and other publishable artifacts.
+- ingest data from Jira and Confluence sources,
+- normalize and validate structure and content,
+- persist approved data in PostgreSQL,
+- expose a web-based interface for report workflows,
+- generate readable executive outputs such as HTML reports and other publishable artifacts.
+
+This is a scoped v1 implementation of a Jira/Confluence automation and reporting solution. It is intended to establish the core data pipeline, validation model, reporting engine, and review workflow. Broader platform features such as generic workflow automation, multi-user collaboration, advanced role management, and additional integrations are deferred to future phases.
 
 ## 3. Problem Statement
 
@@ -31,15 +33,16 @@ The proposed system addresses these issues by establishing a structured workflow
 
 ### 4.1 Goals
 
-- Create a full-stack automation workflow for Jira and Confluence data ingestion.
-- Provide a secure and observable backend service layer.
+- Create a full-stack weekly reporting workflow for Jira and Confluence data ingestion.
+- Provide a secure and observable backend service layer for data collection, validation, persistence, and report generation.
 - Support PostgreSQL-backed persistence for reports, source snapshots, and normalized entities.
-- Deliver a user-friendly React frontend for operational visibility and output generation.
-- Generate executive-ready reports from validated data.
+- Deliver a user-friendly React frontend for report review, output generation, and operational visibility.
+- Generate executive-ready weekly reports from validated data.
 - Design the solution so it can evolve from local JSON and manual inputs toward API/database-backed workflows.
 
 ### 4.2 Non-Goals
 
+- A full-featured general-purpose automation platform in v1.
 - Real-time dashboards in the initial release.
 - Full multi-user collaboration and workflow approvals across all roles.
 - Native support for every Atlassian product feature in v1.
@@ -65,6 +68,10 @@ Provide status data and help ensure ongoing accuracy of underlying Jira and Conf
 Owns configuration, data mappings, schema evolution, environment setup, and deployment reliability.
 
 ## 6. Core Use Cases
+
+### 6.0 v1 Scope Decision
+
+The first release will focus on a weekly reporting workflow. It includes the ability to pull Jira and Confluence data, normalize and validate it, store current state in PostgreSQL, generate a weekly report, and review or export the resulting artifact. The v1 scope does not include a general-purpose automation orchestration layer or broader multi-workflow platform capabilities.
 
 ### 6.1 Generate a Weekly Status Report
 
