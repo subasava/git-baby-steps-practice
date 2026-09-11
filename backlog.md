@@ -14,7 +14,14 @@ Note: Jira MCP can assist with Jira issue tracking and project metadata workflow
 
 - [ ] Confirm the current baseline implementation and identify what should be preserved from the existing Python CLI and sample JSON workflow (Custom Skill) — Approach 1
 - [ ] Define the target project structure for the MVP, including modules for input loading, validation, transformation, rendering, output generation, and CLI entry points (Custom Skill) — Approach 1
-- [ ] Create a clear input schema contract for the report data model, including required fields for tasks, milestones, risks, dependencies, and next-week priorities (Custom Skill) — Approach 1
+- [ ] Create a clear, machine-readable input schema contract for the weekly status report JSON payload so it can be implemented and validated by a coding agent without ambiguity. Define the authoritative schema for the top-level report object and each section (`tasks`, `milestones`, `risks`, `dependencies`, and `next_week_priorities`) including required fields, data types, supported values for statuses/severity/priority, optional/default behavior, and example valid payloads. Update the existing schema-generation and validation tooling so the contract is represented consistently in code and documentation. (Custom Skill) — Approach 1
+
+  Acceptance Criteria:
+  - The repository contains one authoritative schema definition for the weekly status report input, including all required top-level fields and nested section structures.
+  - The schema explicitly defines field names, types, mandatory vs optional fields, and supported enumerated values for statuses such as `Completed`, `In Progress`, `Blocked`, `Not Started`, and other relevant fields.
+  - A valid example payload matching the schema is added or updated in the repo and can be used as the canonical sample for downstream generation and validation.
+  - The existing schema-generation or validation tooling is updated so invalid or incomplete input produces clear, actionable errors instead of silent failures.
+  - The project documentation includes a schema reference that explains the expected JSON structure and the meaning of each field for future implementation and QA.
 - [ ] Define validation rules for missing required fields, malformed values, and unsupported statuses so the tool produces actionable errors instead of broken output (Custom Skill) — Approach 1
 - [ ] Decide the output layout and file conventions for HTML and PDF artifacts, including default output names and directories (Custom Skill) — Approach 1
 - [ ] Establish a local development workflow for running the CLI against sample data and reviewing generated artifacts (Custom Skill) — Approach 2
