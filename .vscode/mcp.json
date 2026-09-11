@@ -21,7 +21,16 @@
     "github": { 
       "type": "http", 
       "url": "https://api.githubcopilot.com/mcp/"
-    }     
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp",
+        "--browser",
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+      ]
+    }
 
   }
 }
